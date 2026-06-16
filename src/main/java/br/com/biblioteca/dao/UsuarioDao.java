@@ -11,6 +11,11 @@ public class UsuarioDao {
 
     public void salvar(Usuario usuario) {
 
+        if (usuarioExiste(usuario.getCpf(), usuario.getUsuario())) {
+            System.out.println("CPF ou usuário já cadastrados.");
+            return;
+        }
+
         String sql =
                 "INSERT INTO usuario(nome, sobrenome, cpf, usuario, senha) " +
                         "VALUES (?, ?, ?, ?, ?)";
@@ -41,6 +46,38 @@ public class UsuarioDao {
             System.out.println(e.getMessage());
 
         }
+    }
+
+    public boolean usuarioExiste(String cpf, String usuario) {
+
+        String sql = "SELECT * FROM usuario WHERE cpf = ? OR usuario = ?";
+
+        try {
+            Connection conexao = ConexaoBanco.conectar();
+            PreparedStatement ps = conexao.prepareStatement(sql);
+
+            ps.setString(1, cpf);
+            ps.setString(2, usuario);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                rs.close();
+                ps.close();
+                conexao.close();
+                return true;
+            }
+
+            rs.close();
+            ps.close();
+            conexao.close();
+
+        } catch (Exception e) {
+            System.out.println("Erro ao verificar existência de usuário:");
+            System.out.println(e.getMessage());
+        }
+
+        return false;
     }
 
     public Usuario fazerLogin(String usuario, String senha) {
