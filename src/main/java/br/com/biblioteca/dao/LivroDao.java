@@ -11,6 +11,15 @@ public class LivroDao {
 
     public void salvar(Livro livro) {
 
+        // Validação dos dados dos livros.
+        if (livro.getTitulo().isEmpty()
+                || livro.getAutor().isEmpty()
+                || livro.getGenero().isEmpty()) {
+
+            System.out.println("Preencha todos os dados do livro.");
+            return;
+        }
+
         String sql =
                 "INSERT INTO livro (titulo, autor, genero, status, id_dono) " +
                         "VALUES (?, ?, ?, ?, ?)";
