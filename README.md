@@ -1,63 +1,79 @@
-# SistemaBibliotecaComunitaria-
+ # 📚 Biblioteca Comunitária Raízes
+A Biblioteca Comunitária Raízes é um sistema desktop colaborativo criado para incentivar a leitura e a circulação de livros. Desenvolvido totalmente em Java, o software permite que leitores gerenciem seus próprios acervos e realizem trocas de obras de forma segura e organizada.
 
-Esse é o projeto prático desenvolvido para a disciplina de Linguagem Técnica II.
+Este projeto foi construído como requisito acadêmico, aplicando na prática conceitos fundamentais como Programação Orientada a Objetos (POO), modelagem de banco de dados relacional, e estruturação de software através dos padrões MVC (Model-View-Controller) e DAO (Data Access Object).
 
-O objetivo do sistema é gerenciar uma biblioteca comunitária em formato desktop, onde os próprios usuários podem cadastrar livros e realizar trocas entre si.
+# ✨ Principais Recursos
+A aplicação foi desenhada para cobrir todo o fluxo de uma biblioteca comunitária virtual:
 
+Gestão de Contas: Sistema de login e cadastro seguro para identificar cada leitor da comunidade.
 
+Dashboard Interativo: Painel de controle com estatísticas atualizadas em tempo real (total de livros, obras disponíveis e métricas de trocas).
 
- # O que o sistema faz
+Exploração do Acervo: Vitrine com todos os livros cadastrados no sistema, permitindo visualizar a disponibilidade e fazer pedidos de reserva.
 
-Autenticação: Cadastro de novas contas e login para acessar o sistema.
+Sistema de Trocas: Área dedicada onde o usuário gerencia os pedidos que fez para outras pessoas e aprova/recusa as solicitações que recebeu em seus próprios livros.
 
-Dashboard: Uma tela inicial com um resumo dos dados (total de livros, quantos estão disponíveis, trocas concluídas e em análise).
+Área do Usuário: Perfil individual contendo as estatísticas pessoais do leitor e o gerenciamento rápido dos livros que ele adicionou à plataforma.
 
-Acervo: Onde ficam todos os livros cadastrados. Dá para pesquisar pelo título e ver o que está disponível.
+# 🛠️ Stack Tecnológico
+Para dar vida à aplicação, utilizamos as seguintes ferramentas e padrões:
 
-Trocas: O coração do projeto. O usuário pode solicitar o livro de outra pessoa, e o dono do livro pode aceitar ou recusar a solicitação na aba de trocas.
+Linguagem Base: Java (JDK 8 ou superior)
 
-Perfil: Uma tela focada no usuário logado, mostrando os dados dele e apenas os livros que ele cadastrou no sistema.
-
-
-
-# Ferramentas utilizadas
-
-O projeto foi feito usando o padrão MVC e o conceito de DAO para separar bem a regra de negócio do banco de dados.
-
-Linguagem: Java
-
-Telas: JavaFX com SceneBuilder (arquivos .fxml)
+Interface Gráfica: JavaFX integrado com SceneBuilder para telas dinâmicas e modernas.
 
 Banco de Dados: MySQL
 
-Conexão: JDBC
+Conectividade: JDBC (Java Database Connectivity)
 
+Arquitetura: MVC e DAO, separando perfeitamente a interface visual das regras de negócio e da comunicação com o banco.
 
+# 💾 O que o sistema gerencia?
+Para garantir o funcionamento das trocas, o banco de dados armazena de forma estruturada:
 
-# Organização do projeto
+Leitores: Nome, CPF, credenciais de acesso (usuário e senha).
 
-br.com.biblioteca.aplicacao: Contém a classe Main que inicializa o projeto no JavaFX.
+Obras: Título, autor, gênero, status de disponibilidade e o ID do dono.
 
-br.com.biblioteca.controller: Faz a ponte entre as telas FXML e a regra de negócio.
+Solicitações (Trocas): Quem pediu, de quem é o livro, qual a obra desejada e o status atual da operação (Pendente, Em Análise, Concluída ou Recusada).
 
-br.com.biblioteca.dao: Operações do banco de dados (o CRUD no MySQL).
+# 🚀 Como testar o projeto na sua máquina
+Siga os passos abaixo para preparar o ambiente e rodar o software:
 
-br.com.biblioteca.model: As classes dos objetos do sistema (Livro, Troca, Usuario).
+1. Preparando o Banco de Dados
+   Certifique-se de ter o MySQL Server instalado.
 
-br.com.biblioteca.sessao: Controla o estado global e quem está logado no momento.
+2. Crie um banco de dados chamado biblioteca_comunitaria.
 
-br.com.biblioteca.conexao: Classe dedicada apenas para conectar com o banco.
+3. Execute o script SQL (disponível nos arquivos do projeto) para gerar as tabelas.
 
-resources/view: Os arquivos XML das telas.
+4. Acesse o arquivo ConexaoBanco.java no pacote br.com.biblioteca.conexao e insira as suas credenciais locais:
 
-resources/view/imagens: As imagens e arquivos de design da interface.
+String url = "jdbc:mysql://localhost:3306/biblioteca_comunitaria";
+String usuario = "SEU_USUARIO_AQUI";
+String senha = "SUA_SENHA_AQUI";
 
+5. Rodando a Aplicação
 
+6. Clone este repositório:
 
-# Desenvolvedores
+Bash
+git clone https://github.com/ulyssesBrrt/SistemaBibliotecaComunitaria-.git
+
+7. Abra o projeto na IDE da sua escolha (IntelliJ, Eclipse, etc.).
+
+8. Certifique-se de que a biblioteca do JavaFX está devidamente configurada no seu ambiente.
+
+9. Localize a classe Main.java (dentro de br.com.biblioteca.aplicacao) e execute o código. A tela de login abrirá automaticamente!
+
+# 👨💻 Equipe de Desenvolvimento
+Este projeto foi desenhado e codificado por:
 
 Hemily Machado
 
 Iasmim Silva
 
 Ulysses Barreto
+
+Projeto desenvolvido para fins acadêmicos e avaliação na disciplina de Linguagem Técnica II.
