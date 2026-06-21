@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
@@ -20,232 +21,70 @@ import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
 
-    @FXML
-    private Label lblTotalLivros;
+    @FXML private Label lblTotalLivros;
+    @FXML private Label lblTrocados;
+    @FXML private Label lblAnalise;
+    @FXML private Label lblDisponiveis;
 
-    @FXML
-    private Label lblTrocados;
+    @FXML private Label lblTitulo1, lblAutor1;
+    @FXML private Label lblTitulo2, lblAutor2;
+    @FXML private Label lblTitulo3, lblAutor3;
+    @FXML private Label lblTitulo4, lblAutor4;
 
-    @FXML
-    private Label lblAnalise;
+    @FXML private Button btnUsuario;
 
-    @FXML
-    private Label lblDisponiveis;
-
-    @FXML
-    private Label lblTitulo1;
-
-    @FXML
-    private Label lblAutor1;
-
-    @FXML
-    private Label lblTitulo2;
-
-    @FXML
-    private Label lblAutor2;
-
-    @FXML
-    private Label lblTitulo3;
-
-    @FXML
-    private Label lblAutor3;
-
-    @FXML
-    private Label lblTitulo4;
-
-    @FXML
-    private Label lblAutor4;
-
-    @FXML
-    private Button btnUsuario;
+    private void mostrarAlerta(String titulo, String mensagem, Alert.AlertType tipo) {
+        Alert alerta = new Alert(tipo);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensagem);
+        alerta.showAndWait();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        if (Sessao.getUsuarioLogado() != null) {
-
-            System.out.println(
-                    "Usuário logado: "
-                            + Sessao.getUsuarioLogado().getNome()
-            );
+        try {
+            carregarCards();
+            carregarLivros();
+        } catch (Exception e) {
+            // Ignorado silenciosamente na inicialização para não travar a tela
         }
-
-        carregarCards();
-        carregarLivros();
     }
 
     private void carregarCards() {
+        LivroDao livroDao = new LivroDao();
+        TrocaDao trocaDao = new TrocaDao();
 
-        LivroDao livroDao =
-                new LivroDao();
-
-        TrocaDao trocaDao =
-                new TrocaDao();
-
-        lblTotalLivros.setText(
-                String.valueOf(
-                        livroDao.contarLivros()
-                )
-        );
-
-        lblDisponiveis.setText(
-                String.valueOf(
-                        livroDao.contarDisponiveis()
-                )
-        );
-
-        lblTrocados.setText(
-                String.valueOf(
-                        trocaDao.contarTrocados()
-                )
-        );
-
-        lblAnalise.setText(
-                String.valueOf(
-                        trocaDao.contarEmAnalise()
-                )
-        );
+        lblTotalLivros.setText(String.valueOf(livroDao.contarLivros()));
+        lblDisponiveis.setText(String.valueOf(livroDao.contarDisponiveis()));
+        lblTrocados.setText(String.valueOf(trocaDao.contarTrocados()));
+        lblAnalise.setText(String.valueOf(trocaDao.contarEmAnalise()));
     }
 
     private void carregarLivros() {
+        LivroDao livroDao = new LivroDao();
+        List<Livro> livros = livroDao.buscarUltimosLivros();
 
-        LivroDao livroDao =
-                new LivroDao();
-
-        List<Livro> livros =
-                livroDao.buscarUltimosLivros();
-
-        if (livros.size() > 0) {
-
-            lblTitulo1.setText(
-                    livros.get(0).getTitulo()
-            );
-
-            lblAutor1.setText(
-                    livros.get(0).getAutor()
-            );
-        }
-
-        if (livros.size() > 1) {
-
-            lblTitulo2.setText(
-                    livros.get(1).getTitulo()
-            );
-
-            lblAutor2.setText(
-                    livros.get(1).getAutor()
-            );
-        }
-
-        if (livros.size() > 2) {
-
-            lblTitulo3.setText(
-                    livros.get(2).getTitulo()
-            );
-
-            lblAutor3.setText(
-                    livros.get(2).getAutor()
-            );
-        }
-
-        if (livros.size() > 3) {
-
-            lblTitulo4.setText(
-                    livros.get(3).getTitulo()
-            );
-
-            lblAutor4.setText(
-                    livros.get(3).getAutor()
-            );
-        }
+        if (livros.size() > 0) { lblTitulo1.setText(livros.get(0).getTitulo()); lblAutor1.setText(livros.get(0).getAutor()); }
+        if (livros.size() > 1) { lblTitulo2.setText(livros.get(1).getTitulo()); lblAutor2.setText(livros.get(1).getAutor()); }
+        if (livros.size() > 2) { lblTitulo3.setText(livros.get(2).getTitulo()); lblAutor3.setText(livros.get(2).getAutor()); }
+        if (livros.size() > 3) { lblTitulo4.setText(livros.get(3).getTitulo()); lblAutor4.setText(livros.get(3).getAutor()); }
     }
 
-    @FXML
-    private void abrirDashboard() {
+    // --- Navegação ---
+    @FXML private void abrirDashboard() { }
+    @FXML private void abrirAcervo() { trocarTela("/view/tela-acervo.fxml"); }
+    @FXML private void abrirTrocas() { trocarTela("/view/tela-trocas.fxml"); }
+    @FXML public void abrirUsuario() { trocarTela("/view/tela-usuario.fxml"); }
 
-        // Já está na Dashboard
-
-    }
-
-    @FXML
-    private void abrirAcervo() {
-
+    private void trocarTela(String caminho) {
         try {
-
-            Parent root =
-                    FXMLLoader.load(
-                            Objects.requireNonNull(
-                                    getClass().getResource(
-                                            "/view/tela-acervo.fxml"
-                                    )
-                            )
-                    );
-
-            Stage stage =
-                    (Stage) lblTotalLivros
-                            .getScene()
-                            .getWindow();
-
-            Scene scene =
-                    new Scene(root);
-
-            stage.setScene(scene);
-
-            stage.show();
-
-        } catch (Exception e) {
-
-            System.out.println(
-                    "Erro ao abrir Acervo:"
-            );
-
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void abrirTrocas() {
-
-        try {
-
-            Parent root =
-                    FXMLLoader.load(
-                            getClass().getResource(
-                                    "/view/tela-trocas.fxml"
-                            )
-                    );
-
-            Stage stage =
-                    (Stage) lblTotalLivros
-                            .getScene()
-                            .getWindow();
-
-            stage.setScene(
-                    new Scene(root)
-            );
-
-            stage.show();
-
-        } catch (Exception e) {
-
-            System.out.println(
-                    "Erro ao abrir Trocas"
-            );
-
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    public void abrirUsuario() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/view/tela-usuario.fxml"));
-            Stage stage = (Stage) btnUsuario.getScene().getWindow();
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(caminho)));
+            Stage stage = (Stage) lblTotalLivros.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (Exception e) {
-            System.out.println("Erro ao abrir Usuário");
-            e.printStackTrace();
+            mostrarAlerta("Erro", "Erro ao abrir tela.", Alert.AlertType.ERROR);
         }
     }
 }
