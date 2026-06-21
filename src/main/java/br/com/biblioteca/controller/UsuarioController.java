@@ -1,0 +1,195 @@
+package br.com.biblioteca.controller;
+
+import br.com.biblioteca.dao.LivroDao;
+import br.com.biblioteca.dao.TrocaDao;
+import br.com.biblioteca.model.Livro;
+import br.com.biblioteca.model.Troca;
+import br.com.biblioteca.model.Usuario;
+import br.com.biblioteca.sessao.Sessao;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
+public class UsuarioController implements Initializable {
+
+    @FXML private Label lblNome;
+    @FXML private Label lblSobrenome;
+    @FXML private Label lblCpf;
+    @FXML private Label lblUsuario;
+
+    @FXML private Label lblTotalLivros;
+    @FXML private Label lblDisponiveis;
+    @FXML private Label lblTrocados;
+    @FXML private Label lblEmAnalise;
+
+    @FXML private FlowPane flowMeusLivros;
+
+    @FXML private Button btnDashboard;
+    @FXML private Button btnAcervo;
+    @FXML private Button btnTrocas;
+    @FXML private Button btnUsuario;
+
+    private final LivroDao livroDao = new LivroDao();
+    private final TrocaDao trocaDao = new TrocaDao();
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        carregarPerfil();
+        carregarEstatisticas();
+        carregarMeusLivros();
+    }
+
+    private void carregarPerfil() {
+        Usuario usuario = Sessao.getUsuarioLogado();
+
+        if (usuario != null) {
+            lblNome.setText(usuario.getNome());
+            lblSobrenome.setText(usuario.getSobrenome());
+            lblCpf.setText(usuario.getCpf());
+            lblUsuario.setText(usuario.getUsuario());
+        }
+    }
+
+    private void carregarEstatisticas() {
+        Usuario usuario = Sessao.getUsuarioLogado();
+        if (usuario == null) return;
+
+        List<Livro> meusLivros = livroDao.buscarLivrosDoUsuario(usuario.getId());
+        lblTotalLivros.setText(String.valueOf(meusLivros.size()));
+
+        int disponiveis = 0;
+        for (Livro livro : meusLivros) {
+            if (livro.isDisponivel()) {
+                disponiveis++;
+            }
+        }
+        lblDisponiveis.setText(String.valueOf(disponiveis));
+
+        List<Troca> trocasRecebidas = trocaDao.buscarTrocasRecebidas(usuario.getId());
+        List<Troca> trocasEnviadas = trocaDao.buscarTrocasEnviadas(usuario.getId());
+
+        List<Troca> todasAsTrocas = new ArrayList<>();
+        if (trocasRecebidas != null) todasAsTrocas.addAll(trocasRecebidas);
+        if (trocasEnviadas != null) todasAsTrocas.addAll(trocasEnviadas);
+
+        int emAnalise = 0;
+        int concluidas = 0;
+
+        for (Troca troca : todasAsTrocas) {
+            if (troca.getStatus().equalsIgnoreCase("EM_ANALISE") || troca.getStatus().equalsIgnoreCase("PENDENTE")) {
+                emAnalise++;
+            } else if (troca.getStatus().equalsIgnoreCase("CONCLUIDA")) {
+                concluidas++;
+            }
+        }
+
+        lblEmAnalise.setText(String.valueOf(emAnalise));
+        lblTrocados.setText(String.valueOf(concluidas));
+    }
+
+    private void carregarMeusLivros() {
+        Usuario usuario = Sessao.getUsuarioLogado();
+        if (usuario == null) return;
+
+        flowMeusLivros.getChildren().clear();
+
+        List<Livro> livros = livroDao.buscarLivrosDoUsuario(usuario.getId());
+
+        for (Livro livro : livros) {
+            VBox card = criarCardLivroUsuario(livro);
+            flowMeusLivros.getChildren().add(card);
+        }
+    }
+
+    private VBox criarCardLivroUsuario(Livro livro) {
+        VBox card = new VBox();
+        card.setPrefWidth(160);
+        card.setPrefHeight(90);
+        card.setSpacing(10);
+        card.setStyle(
+                "-fx-background-color: white;" +
+                        "-fx-background-radius: 16;" +
+                        "-fx-padding: 15;"
+        );
+
+        Label lblTitulo = new Label(livro.getTitulo());
+        lblTitulo.setWrapText(true);
+        lblTitulo.setStyle(
+                "-fx-font-size: 15;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-text-fill: #2D2019;"
+        );
+
+        Label lblAutor = new Label(livro.getAutor());
+        lblAutor.setStyle(
+                "-fx-font-size: 12;" +
+                        "-fx-text-fill: #8A8177;"
+        );
+
+        card.getChildren().addAll(lblTitulo, lblAutor);
+        return card;
+    }
+
+    @FXML
+    public void abrirDashboard() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/dashboard.fxml"));
+            Stage stage = (Stage) btnDashboard.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void abrirAcervo() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/tela-acervo.fxml"));
+            Stage stage = (Stage) btnAcervo.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void abrirTrocas() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/tela-trocas.fxml"));
+            Stage stage = (Stage) btnTrocas.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void abrirUsuarios() {
+        carregarPerfil();
+        carregarEstatisticas();
+        carregarMeusLivros();
+    }
+
+    public Button getBtnUsuario() {
+        return btnUsuario;
+    }
+
+    public void setBtnUsuario(Button btnUsuario) {
+        this.btnUsuario = btnUsuario;
+    }
+}

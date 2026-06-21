@@ -3,22 +3,27 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="640.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.biblioteca.controller.LoginController">
 
     <children>
 
-        <ImageView fitHeight="640.0" fitWidth="900.0"
-                   pickOnBounds="true"
-                   preserveRatio="false">
+        <ImageView fitHeight="640.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="false">
             <image>
 
                 <Image url="@imagens/login.png" />
             </image>
 
         </ImageView>
-      <TextField fx:id="txtUsuario" layoutX="509.0" layoutY="245.0" prefHeight="34.0" prefWidth="321.0" style="-fx-background-color: transparent;" />
-      <PasswordField fx:id="txtSenha" layoutX="509.0" layoutY="320.0" prefHeight="34.0" prefWidth="321.0" style="-fx-background-color: transparent;" />
+      <TextField fx:id="txtUsuario" layoutX="509.0" layoutY="245.0" prefHeight="34.0" prefWidth="321.0" style="-fx-background-color: transparent;">
+         <font>
+            <Font name="Poppins Medium" size="12.0" />
+         </font></TextField>
+      <PasswordField fx:id="txtSenha" layoutX="509.0" layoutY="320.0" prefHeight="34.0" prefWidth="321.0" style="-fx-background-color: transparent;">
+         <font>
+            <Font name="Poppins Medium" size="12.0" />
+         </font></PasswordField>
       <Button fx:id="btnEntrar" layoutX="509.0" layoutY="374.0" mnemonicParsing="false" onAction="#entrar" prefHeight="40.0" prefWidth="321.0" style="-fx-background-color: transparent;" />
       <Button fx:id="btnCadastrar" layoutX="510.0" layoutY="432.0" mnemonicParsing="false" onAction="#abrirCadastro" prefHeight="40.0" prefWidth="321.0" style="-fx-background-color: transparent;" />
 

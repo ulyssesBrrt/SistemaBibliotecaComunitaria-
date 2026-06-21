@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="640.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.biblioteca.controller.CadastroLivroController">
+
+    <ImageView fitHeight="640.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="false">
+        <image>
+            <Image url="@imagens/cadastro-livro001.png" />
+        </image>
+    </ImageView>
+   <Button fx:id="btnDashboard" layoutX="322.0" layoutY="14.0" mnemonicParsing="false" onAction="#abrirDashboard" prefHeight="2.0" prefWidth="58.0" style="-fx-background-color: transparent;" />
+   <Button fx:id="btnAcervo" layoutX="401.0" layoutY="14.0" mnemonicParsing="false" onAction="#abrirAcervo" prefHeight="25.0" prefWidth="49.0" style="-fx-background-color: transparent;" />
+   <Button fx:id="btnTrocas" layoutX="469.0" layoutY="14.0" mnemonicParsing="false" onAction="#abrirTrocas" prefHeight="25.0" prefWidth="49.0" style="-fx-background-color: transparent;" />
+   <Button fx:id="btnUsuario" layoutX="534.0" layoutY="14.0" mnemonicParsing="false" onAction="#abrirUsuario" prefHeight="25.0" prefWidth="49.0" style="-fx-background-color: transparent;" />
+   <TextField fx:id="txtTitulo" layoutX="246.0" layoutY="219.0" prefHeight="40.0" prefWidth="409.0" style="-fx-background-color: transparent;">
+      <font>
+         <Font name="Poppins Medium" size="12.0" />
+      </font></TextField>
+   <TextField fx:id="txtAutor" layoutX="246.0" layoutY="294.0" prefHeight="40.0" prefWidth="409.0" style="-fx-background-color: transparent;">
+      <font>
+         <Font name="Poppins Medium" size="12.0" />
+      </font></TextField>
+   <TextField fx:id="txtGenero" layoutX="246.0" layoutY="369.0" prefHeight="40.0" prefWidth="409.0" style="-fx-background-color: transparent;">
+      <font>
+         <Font name="Poppins Medium" size="12.0" />
+      </font></TextField>
+   <Button fx:id="btnCadastrarLivro" layoutX="246.0" layoutY="431.0" mnemonicParsing="false" onAction="#cadastrarLivro" prefHeight="40.0" prefWidth="409.0" style="-fx-background-color: transparent;" />
+
+</AnchorPane>
